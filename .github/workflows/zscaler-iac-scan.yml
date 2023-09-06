@@ -39,12 +39,6 @@ jobs:
           client_secret : ${{ secrets.ZSCANNER_CLIENT_SECRET }}
           #This is the user region specified during the onboarding process within the ZPC Admin Portal.
           region : 'EU'
-          output_format :  'human+github-sarif'
+          output_format :  'human'
           #To fail the build based on policy violations identified in the IaC templates, set the input value (fail_build) to true.
           fail_build : 'true'
-      #Ensure that the following step is included in order to post the scan results under the code scanning alerts section within the repository.
-      - name: Upload SARIF file
-        if: ${{ success() || failure() && (steps.zscaler-iac-scan.outputs.sarif_file_path != '') }}
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: ${{ steps.zscaler-iac-scan.sarif_file_path }}
